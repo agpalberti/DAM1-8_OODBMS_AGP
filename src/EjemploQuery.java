@@ -13,44 +13,44 @@ public class EjemploQuery extends Util {
         ObjectContainer db=Db4o.openFile(Db4o
 				.newConfiguration(), DB4OFILENAME);
         try {
-            storeFirstPilot(db);
-            storeSecondPilot(db);
-            retrieveAllPilots(db);
-            retrievePilotByName(db);
-            retrievePilotByExactPoints(db);
+            guardarPrimerParticipante(db);
+            guardarSegundoParticipante(db);
+            guardarTercerParticipante(db);
+            obtenerParticipantePorNombre(db);
+            obtenerParticipantePorPuntosExactos(db);
             retrieveByNegation(db);
             retrieveByConjunction(db);
             retrieveByDisjunction(db);
             retrieveByComparison(db);
             retrieveByDefaultFieldValue(db);
-            retrieveSorted(db); 
-            clearDatabase(db);
+            obtenerlosOrdenados(db);
+            limpiarBBDD(db);
         }
         finally {
             db.close();
         }
     }
 
-    public static void storeFirstPilot(ObjectContainer db) {
+    public static void guardarPrimerParticipante(ObjectContainer db) {
         Participante participante1 =new Participante("Michael Schumacher",100);
         db.store(participante1);
         System.out.println("Stored "+ participante1);
     }
 
-    public static void storeSecondPilot(ObjectContainer db) {
+    public static void guardarSegundoParticipante(ObjectContainer db) {
         Participante participante2 =new Participante("Rubens Barrichello",99);
         db.store(participante2);
         System.out.println("Stored "+ participante2);
     }
 
-    public static void retrieveAllPilots(ObjectContainer db) {
+    public static void guardarTercerParticipante(ObjectContainer db) {
         Query query=db.query();
         query.constrain(Participante.class);
         ObjectSet result=query.execute();
         listResult((List<?>) result);
     }
 
-    public static void retrievePilotByName(ObjectContainer db) {
+    public static void obtenerParticipantePorNombre(ObjectContainer db) {
         Query query=db.query();
         query.constrain(Participante.class);
         query.descend("name").constrain("Michael Schumacher");
@@ -58,7 +58,7 @@ public class EjemploQuery extends Util {
         listResult((List<?>) result);
     }
     
-    public static void retrievePilotByExactPoints(
+    public static void obtenerParticipantePorPuntosExactos(
             ObjectContainer db) {
         Query query=db.query();
         query.constrain(Participante.class);
@@ -118,7 +118,7 @@ public class EjemploQuery extends Util {
         db.delete(somebody);
     }
     
-    public static void retrieveSorted(ObjectContainer db) {
+    public static void obtenerlosOrdenados(ObjectContainer db) {
         Query query=db.query();
         query.constrain(Participante.class);
         query.descend("name").orderAscending();
@@ -129,7 +129,7 @@ public class EjemploQuery extends Util {
         listResult((List<?>) result);
     }
 
-    public static void clearDatabase(ObjectContainer db) {
+    public static void limpiarBBDD(ObjectContainer db) {
         ObjectSet result=db.queryByExample(Participante.class);
         while(result.hasNext()) {
             db.delete(result.next());
